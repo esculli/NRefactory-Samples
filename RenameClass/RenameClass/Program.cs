@@ -40,16 +40,33 @@ namespace RenameClass
 
 		public static void Main(string[] args)
 		{
-            var solutionFile = "C:\\Users\\v-ezeqs\\Documents\\Visual Studio 2010\\Projects\\Application36\\Application36.sln";
-            var classNamespace = "Application36.WebHost";
-            var className = "SiteMaster";
-            var classNewName = "SiteMaster2";
-			
-            // Define which Type I'm looking for
-            var typeReference = new GetClassTypeReference(classNamespace, className) as ITypeReference;
+            if (args.Length != 4)
+            {
+                Console.WriteLine("use: RenameClass.exe <SolutionPath> <ClassNamespace> <CurrentClassName> <NewClassName>");
+                return;
+            }
+
+            var solutionFile = args[0]; // "C:\\Users\\v-ezeqs\\Documents\\Visual Studio 2010\\Projects\\Application36\\Application36.sln"
+            var classNamespace = args[1]; // "Application36.WebHost"
+            var className = args[2]; // "SiteMaster"
+            var classNewName = args[3]; // "SiteMaster2"
+
+            if (!File.Exists(solutionFile))
+            {
+                Console.WriteLine("Solution not found at {0}", solutionFile);
+                return;
+            }
+
+            Console.WriteLine("Loading solution...");
             
             // Loading Solution in Memory
             Solution solution = new Solution(solutionFile);
+
+
+            Console.WriteLine("Finding references...");
+
+            // Define which Type I'm looking for
+            var typeReference = new GetClassTypeReference(classNamespace, className) as ITypeReference;
             
             // Try to find the Type definition in solution's projects 
             foreach (var proj in solution.Projects)
@@ -60,6 +77,12 @@ namespace RenameClass
                     SetSearchedMembers(new List<object>() { type });
                 }
 	        }
+
+            if (searchedMembers == null)
+            {
+                Console.WriteLine("Not References found. Refactoring Done.");
+                return;
+            }
 
             // Find all related members related with the Type (like Members, Methods, etc)
             ICSharpCode.NRefactory.CSharp.Resolver.FindReferences refFinder = new ICSharpCode.NRefactory.CSharp.Resolver.FindReferences();
@@ -87,38 +110,36 @@ namespace RenameClass
                 }
 			}
 
-			Console.WriteLine("Found {0} places to refactor in {1} files.",
+			Console.WriteLine("Refactoring {0} places in {1} files...",
                               refs.Count(),
 			                  refs.Select(x => x.File.FileName).Distinct().Count());
-			Console.Write("Apply refactorings? ");
-
-			string answer = Console.ReadLine();
+			
 			
             // Perform replace for each of the References found
-            if ("yes".Equals(answer, StringComparison.OrdinalIgnoreCase) || "y".Equals(answer, StringComparison.OrdinalIgnoreCase)) {
-				foreach (var r in refs) {
-					// DocumentScript expects the the AST to stay unmodified (so that it fits
-					// to the document state at the time of the DocumentScript constructor call),
-					// so we call Freeze() to prevent accidental modifications (e.g. forgetting a Clone() call).
-                    r.File.SyntaxTree.Freeze();
+            foreach (var r in refs) {
+				// DocumentScript expects the the AST to stay unmodified (so that it fits
+				// to the document state at the time of the DocumentScript constructor call),
+				// so we call Freeze() to prevent accidental modifications (e.g. forgetting a Clone() call).
+                r.File.SyntaxTree.Freeze();
 
-					// Create a document containing the file content:
-					var document = new StringBuilderDocument(r.File.OriginalText);
-					using (var script = new DocumentScript(document, FormattingOptionsFactory.CreateAllman(), new TextEditorOptions())) {
-                        // Alternative 1: clone a portion of the AST and modify it
-                        //var copy = (InvocationExpression)expr.Clone();
-                        //copy.Arguments.Add(stringComparisonAst.Member("Ordinal"));
-                        //script.Replace(expr, copy);
+				// Create a document containing the file content:
+				var document = new StringBuilderDocument(r.File.OriginalText);
+				using (var script = new DocumentScript(document, FormattingOptionsFactory.CreateAllman(), new TextEditorOptions())) {
+                    // Alternative 1: clone a portion of the AST and modify it
+                    //var copy = (InvocationExpression)expr.Clone();
+                    //copy.Arguments.Add(stringComparisonAst.Member("Ordinal"));
+                    //script.Replace(expr, copy);
 							
-                        // Alternative 2: perform direct text insertion / replace
-                        int offset = script.GetCurrentOffset(r.Region.Begin);
-                        var length = r.Region.End.Column - r.Region.Begin.Column;
+                    // Alternative 2: perform direct text insertion / replace
+                    int offset = script.GetCurrentOffset(r.Region.Begin);
+                    var length = r.Region.End.Column - r.Region.Begin.Column;
 
-                        script.Replace(offset, length, classNewName);
-					}
-					File.WriteAllText(r.File.FileName, document.Text);
+                    script.Replace(offset, length, classNewName);
 				}
+				File.WriteAllText(r.File.FileName, document.Text);
 			}
+
+            Console.WriteLine("Refactoring Done.");
 		}
 
         public static void SetSearchedMembers(IEnumerable<object> members)
