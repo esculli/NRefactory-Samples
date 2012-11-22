@@ -26,7 +26,7 @@ using ICSharpCode.NRefactory.CSharp.TypeSystem;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.NRefactory.TypeSystem;
 
-namespace RenameClass
+namespace NRefactory.RenameClass
 {
 	public class CSharpFile
 	{

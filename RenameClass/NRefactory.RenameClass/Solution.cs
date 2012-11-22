@@ -27,7 +27,7 @@ using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.NRefactory.TypeSystem.Implementation;
 using ICSharpCode.NRefactory.Utils;
 
-namespace RenameClass
+namespace NRefactory.RenameClass
 {
 	/// <summary>
 	/// Represents a Visual Studio solution (.sln file).

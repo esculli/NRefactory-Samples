@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>"C:\\Users\\v-ezeqs\\Documents\\Visual Studio 2010\\Projects\\Application36\\Application36.sln" "Application36.WebHost" "SiteMaster" "SiteMaster2"</StartArguments>
+    <StartArguments>"C:\Users\v-ezeqs\Documents\Visual Studio 2010\Projects\New\Application5\Application5.sln" "Application5.InternalMessages.Service1" "Command1" "CommandRenamed"</StartArguments>
   </PropertyGroup>
 </Project>

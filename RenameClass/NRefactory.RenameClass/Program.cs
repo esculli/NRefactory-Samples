@@ -29,9 +29,9 @@ using ICSharpCode.NRefactory.Semantics;
 using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.NRefactory.TypeSystem.Implementation;
 
-namespace RenameClass
+namespace NRefactory.RenameClass
 {
-	class Program
+	public class Program
 	{
         static List<object> searchedMembers;
         static List<dynamic> refs;
@@ -123,7 +123,8 @@ namespace RenameClass
                 r.File.SyntaxTree.Freeze();
 
 				// Create a document containing the file content:
-				var document = new StringBuilderDocument(r.File.OriginalText);
+                var fileText = File.ReadAllText(r.File.FileName);
+                var document = new StringBuilderDocument(fileText);
 				using (var script = new DocumentScript(document, FormattingOptionsFactory.CreateAllman(), new TextEditorOptions())) {
                     // Alternative 1: clone a portion of the AST and modify it
                     //var copy = (InvocationExpression)expr.Clone();
@@ -136,7 +137,7 @@ namespace RenameClass
 
                     script.Replace(offset, length, classNewName);
 				}
-				File.WriteAllText(r.File.FileName, document.Text);
+                File.WriteAllText(r.File.FileName, document.Text);
 			}
 
             Console.WriteLine("Refactoring Done.");

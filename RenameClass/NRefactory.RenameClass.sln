@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenameClass", "RenameClass\RenameClass.csproj", "{551D0119-B9EA-4C9F-B952-2697650D29C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NRefactory.RenameClass", "NRefactory.RenameClass\NRefactory.RenameClass.csproj", "{551D0119-B9EA-4C9F-B952-2697650D29C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

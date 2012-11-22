@@ -26,7 +26,7 @@ using ICSharpCode.NRefactory.TypeSystem;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Logging;
 
-namespace RenameClass
+namespace NRefactory.RenameClass
 {
 	/// <summary>
 	/// Represents a C# project (.csproj file)
