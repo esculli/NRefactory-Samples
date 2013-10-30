@@ -90,7 +90,7 @@ namespace NRefactory.RenameClass
             
             // Finding references to the Type on the one of the different Solution files
             refs = new List<dynamic>();
-            foreach (var file in solution.AllFiles) {
+            foreach (var file in solution.AllFiles.Distinct (new CSharpFileEqualityComparer())) {
                 foreach (var scope in scopes)
                 {
                     refFinder.FindReferencesInFile(

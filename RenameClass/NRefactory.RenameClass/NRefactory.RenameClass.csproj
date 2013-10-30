@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharpFile.cs" />
+    <Compile Include="CSharpFileEqualityComparer.cs" />
     <Compile Include="CSharpProject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
