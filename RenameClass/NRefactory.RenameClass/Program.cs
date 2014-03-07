@@ -33,7 +33,7 @@ namespace NRefactory.RenameClass
 {
 	public class Program
 	{
-        static List<object> searchedMembers;
+        static List<object> searchedMembers = new List<object>();
         static List<dynamic> refs;
         static string memberName;
         static string keywordName;
@@ -145,7 +145,7 @@ namespace NRefactory.RenameClass
 
         public static void SetSearchedMembers(IEnumerable<object> members)
         {
-            searchedMembers = new List<object>(members);
+            searchedMembers.AddRange(members);
             var firstMember = searchedMembers.FirstOrDefault();
             if (firstMember is INamedElement)
             {
